@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "RationalNumber.hpp"
 #include "Matrix.hpp"
 
 int main()
@@ -15,5 +16,10 @@ int main()
     // a.gauss();
 
     // a.print();
+
+    RationalNumber n;
+
+    // std::cout << n;
+
     return 0;
 }
