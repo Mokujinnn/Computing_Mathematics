@@ -4,16 +4,16 @@
 
 int main()
 {
-    Matrix a(3,3);
+    // Matrix a("D:\\Files\\Computing_Mathematics\\lab1\\file.txt");
+
+    // // a.print();
+
+    // // a.readFromFile("D:\\Files\\Computing_Mathematics\\lab1\\file.txt");
 
     // a.print();
 
-    a.readFromFile("D:\\Files\\Computing_Mathematics\\lab1\\file.txt");
+    // a.gauss();
 
-    a.print();
-
-    a.gauss();
-
-    a.print();
+    // a.print();
     return 0;
 }

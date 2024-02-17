@@ -5,15 +5,16 @@
 class Matrix
 {
 private:
+    float *memptr;
     float **matrix;
     float *vector;
 
     unsigned n;
     unsigned m;
     
-    
+    void memoryInit();
 public:
-    Matrix(unsigned n, unsigned m);
+    Matrix(const std::string &filename);
 
     ~Matrix();
 
