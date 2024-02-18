@@ -17,9 +17,10 @@ int main()
 
     // a.print();
 
-    RationalNumber n;
+    RationalNumber a(3, 10, 1);
+    RationalNumber b(2, 5, 0);
 
-    // std::cout << n;
+    std::cout << a + b;
 
     return 0;
 }

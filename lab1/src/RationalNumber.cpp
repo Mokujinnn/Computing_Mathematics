@@ -1,8 +1,40 @@
-#include <set>
-
 #include "RationalNumber.hpp"
 
-// using RationalNumber = RationalRationalNumberber;
+size_t NOD(size_t a, size_t b)
+{
+    while (a != 0 && b != 0)
+    {
+        if (a > b)
+        {
+            a = a % b;
+        }
+        else
+        {
+            b = b % a;
+        }
+    }
+
+    return (a == 0) ? b : a;
+}
+
+size_t NOK(size_t a, size_t b)
+{
+    return a * b / NOD(a, b);
+}
+
+size_t ToCommonDenominator(RationalNumber &n1, RationalNumber &n2)
+{
+    size_t nok = NOK(n1.denominator, n2.denominator);
+    size_t d1 = nok / n1.denominator;
+    size_t d2 = nok / n2.denominator;
+
+    n1.denominator *= d1;
+    n1.numerator *= d1;
+    n2.denominator *= d2;
+    n2.numerator *= d2;
+
+    return nok;
+}
 
 RationalNumber::RationalNumber()
     : numerator(0),
@@ -29,28 +61,6 @@ RationalNumber::~RationalNumber()
 {
 }
 
-size_t RationalNumber::NOD(size_t a, size_t b)
-{
-    while (a != 0 && b != 0)
-    {
-        if (a > b)
-        {
-            a = a % b;
-        }
-        else
-        {
-            b = b % a;
-        }
-    }
-
-    return (a == 0) ? b : a;
-}
-
-size_t RationalNumber::NOK(size_t a, size_t b)
-{
-    return a * b / NOD(a, b);
-}
-
 size_t RationalNumber::GetNumerator() const
 {
     return this->numerator;
@@ -61,16 +71,9 @@ size_t RationalNumber::GetDenominator() const
     return this->denominator;
 }
 
-void RationalNumber::ToCommonDenominator(RationalNumber &n)
+bool RationalNumber::GetSign() const
 {
-    size_t nok = NOK(this->denominator, n.denominator);
-    size_t d1 = nok / this->denominator;
-    size_t d2 = nok / n.denominator;
-
-    this->denominator *= d1;
-    this->numerator *= d1;
-    n.denominator *= d2;
-    n.numerator *= d2;
+    return this->sign;
 }
 
 void RationalNumber::Reduce()
@@ -89,11 +92,75 @@ RationalNumber &RationalNumber::operator=(const RationalNumber &a)
         this->denominator = a.denominator;
         this->sign = a.sign;
     }
-    
+
     return *this;
 }
 
-// RationalNumber &operator+(const RationalNumber &n1, const RationalNumber &n2)
-// {
+RationalNumber operator-(const RationalNumber &n)
+{
+    return RationalNumber(n.GetNumerator(), n.GetDenominator(), !n.GetSign());
+}
 
-// }
+RationalNumber operator+(const RationalNumber &n1, const RationalNumber &n2)
+{
+    RationalNumber a(n1);
+    RationalNumber b(n2);
+
+    size_t denom = ToCommonDenominator(a, b);
+    bool signa = a.GetSign();
+    bool signb = b.GetSign();
+    size_t numa = a.GetNumerator();
+    size_t numb = b.GetNumerator();
+
+    if (signa && signb)
+    {
+        RationalNumber n(numa + numb, denom, 1);
+        n.Reduce();
+        return n;
+    }
+    else if (signa)
+    {
+        RationalNumber n;
+        if (numa > numb)
+        {
+            n = RationalNumber(numa - numb, denom, 1);
+        }
+        else if (numa == numb)
+        {
+            n = RationalNumber(0, 1, 0);
+        }
+        else
+        {
+            n = RationalNumber(numb - numa, denom, 0);
+        }
+
+        n.Reduce();
+
+        return n;
+    }
+    else if (signb)
+    {
+        RationalNumber n;
+        if (numb > numa)
+        {
+            n = RationalNumber(numb - numa, denom, 1);
+        }
+        else if (numa == numb)
+        {
+            n = RationalNumber(0, 1, 0);
+        }
+        else
+        {
+            n = RationalNumber(numa - numb, denom, 0);
+        }
+
+        n.Reduce();
+
+        return n;
+    }
+
+    RationalNumber n(numa + numb, denom, 0);
+    n.Reduce();
+
+    return n;
+}
