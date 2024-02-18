@@ -72,6 +72,8 @@ void Matrix::readFromFile(const std::string &filename)
             file >> matrix[i][j];
         }
     }
+
+    file.close();
 }
 
 void Matrix::gauss()
