@@ -84,6 +84,10 @@ void RationalNumber::Reduce()
     this->numerator /= d;
 }
 
+//
+// Operators in class
+//
+
 RationalNumber &RationalNumber::operator=(const RationalNumber &a)
 {
     if (this != &a)
@@ -95,6 +99,26 @@ RationalNumber &RationalNumber::operator=(const RationalNumber &a)
 
     return *this;
 }
+
+RationalNumber &RationalNumber::operator+=(const RationalNumber &a)
+{
+    *this = *this + a;
+    return *this;
+}
+
+RationalNumber &RationalNumber::operator-=(const RationalNumber &a)
+{
+    *this = *this - a;
+    return *this;
+}
+
+//
+// Operators in class end
+//
+
+//
+// Operators outside class
+//
 
 RationalNumber operator-(const RationalNumber &n)
 {
@@ -164,3 +188,12 @@ RationalNumber operator+(const RationalNumber &n1, const RationalNumber &n2)
 
     return n;
 }
+
+RationalNumber operator-(const RationalNumber &n1, const RationalNumber &n2)
+{
+    return n1 + (-n2);
+}
+
+//
+// Operators outside class end
+//

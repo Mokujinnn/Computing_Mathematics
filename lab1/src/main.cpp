@@ -20,7 +20,9 @@ int main()
     RationalNumber a(3, 10, 1);
     RationalNumber b(2, 5, 0);
 
-    std::cout << a + b;
+    a -= b;
+
+    std::cout << a << ' ' << b;
 
     return 0;
 }
