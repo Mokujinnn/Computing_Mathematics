@@ -4,8 +4,6 @@
 
 class RationalNumber
 {
-    using Num = RationalNumber;
-
 private:
     size_t numerator;
     size_t denominator;
@@ -14,19 +12,22 @@ private:
     size_t NOD(size_t a, size_t b);
     size_t NOK(size_t a, size_t b);
 
-    void ToCommonDenominator(Num &n1, Num &n2);
+    void ToCommonDenominator(RationalNumber &n);
+    void Reduce();
 
 public:
     RationalNumber();
+    RationalNumber(size_t numerator, size_t denominator, bool sign = 0);
+    RationalNumber(const RationalNumber &a);
     ~RationalNumber();
 
     size_t GetNumerator() const;
     size_t GetDenominator() const;
 
-    friend std::ostream &operator<<(std::ostream &os, const Num &n)
+    friend std::ostream &operator<<(std::ostream &os, const RationalNumber &n)
     {
         return os << n.numerator << '/' << n.denominator;
     }
 
-    // Num &operator+(const Num &num);
+    RationalNumber &operator=(const RationalNumber &a);
 };
