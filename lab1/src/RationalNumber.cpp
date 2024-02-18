@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "RationalNumber.hpp"
 
 size_t NOD(size_t a, size_t b)
@@ -50,6 +52,41 @@ RationalNumber::RationalNumber(size_t numerator, size_t denominator, bool sign)
 {
 }
 
+RationalNumber::RationalNumber(double a)
+    : numerator(0),
+      denominator(1),
+      sign(0)
+{
+    double eps = 1e-10;
+    int count = 0;
+
+    if (a < 0)
+    {
+        this->sign = 1;
+    }
+
+    while (!(a - std::floor(a) < eps))
+    {
+        a *= 10;
+        ++count;
+    }
+    int multiply = count;
+
+    count = 0;
+    size_t b = size_t(a);
+    while (b != 0)
+    {
+        int n = b % 10;
+        b /= 10;
+
+        this->numerator += n * std::pow(10, count);
+        ++count;
+    }
+    this->denominator = std::pow(10, multiply);
+
+    Reduce();
+}
+
 RationalNumber::RationalNumber(const RationalNumber &a)
     : numerator(a.numerator),
       denominator(a.denominator),
@@ -84,6 +121,16 @@ void RationalNumber::Reduce()
     this->numerator /= d;
 }
 
+double RationalNumber::ToDouble()
+{
+    if (sign)
+    {
+        return (double)numerator / denominator * -1;
+    }
+    return (double)numerator / denominator;
+    
+}
+
 //
 // Operators in class
 //
@@ -112,7 +159,7 @@ RationalNumber &RationalNumber::operator-=(const RationalNumber &a)
     return *this;
 }
 
-RationalNumber& RationalNumber::operator*=(const RationalNumber &a)
+RationalNumber &RationalNumber::operator*=(const RationalNumber &a)
 {
     this->numerator *= a.numerator;
     this->denominator *= a.denominator;
@@ -122,7 +169,7 @@ RationalNumber& RationalNumber::operator*=(const RationalNumber &a)
     return *this;
 }
 
-RationalNumber& RationalNumber::operator/=(const RationalNumber &a)
+RationalNumber &RationalNumber::operator/=(const RationalNumber &a)
 {
     if (this == &a)
     {
@@ -132,7 +179,7 @@ RationalNumber& RationalNumber::operator/=(const RationalNumber &a)
 
         return *this;
     }
-    
+
     this->numerator *= a.denominator;
     this->denominator *= a.numerator;
     this->sign = this->sign ^ a.sign;

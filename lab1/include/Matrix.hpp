@@ -2,12 +2,14 @@
 
 #include <string>
 
+#include "RationalNumber.hpp"
+
 class Matrix
 {
 private:
-    float *memptr;
-    float **matrix;
-    float *vector;
+    RationalNumber *memptr;
+    RationalNumber **matrix;
+    RationalNumber *vector;
 
     unsigned n;
     unsigned m;

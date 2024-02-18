@@ -14,6 +14,7 @@ private:
 public:
     RationalNumber();
     RationalNumber(size_t numerator, size_t denominator, bool sign = 0);
+    RationalNumber(double a);
     RationalNumber(const RationalNumber &a);
     ~RationalNumber();
 
@@ -21,6 +22,7 @@ public:
     size_t GetDenominator() const;
     bool GetSign() const;
     void Reduce();
+    double ToDouble();
 
     friend std::ostream &operator<<(std::ostream &os, const RationalNumber &n)
     {
