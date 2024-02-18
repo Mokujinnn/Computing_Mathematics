@@ -38,6 +38,8 @@ public:
 
     RationalNumber &operator+=(const RationalNumber &a);
     RationalNumber &operator-=(const RationalNumber &a);
+    RationalNumber &operator*=(const RationalNumber &a);
+    RationalNumber &operator/=(const RationalNumber &a);
 };
 
 size_t NOD(size_t a, size_t b);
@@ -46,3 +48,5 @@ size_t NOK(size_t a, size_t b);
 RationalNumber operator-(const RationalNumber &n);
 RationalNumber operator+(const RationalNumber &n1, const RationalNumber &n2);
 RationalNumber operator-(const RationalNumber &n1, const RationalNumber &n2);
+RationalNumber operator*(const RationalNumber &n1, const RationalNumber &n2);
+RationalNumber operator/(const RationalNumber &n1, const RationalNumber &n2);

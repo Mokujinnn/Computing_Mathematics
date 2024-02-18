@@ -17,10 +17,10 @@ int main()
 
     // a.print();
 
-    RationalNumber a(3, 10, 1);
+    RationalNumber a(3, 10, 0);
     RationalNumber b(2, 5, 0);
 
-    a -= b;
+    a *= a;
 
     std::cout << a << ' ' << b;
 

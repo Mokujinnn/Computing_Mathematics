@@ -112,6 +112,35 @@ RationalNumber &RationalNumber::operator-=(const RationalNumber &a)
     return *this;
 }
 
+RationalNumber& RationalNumber::operator*=(const RationalNumber &a)
+{
+    this->numerator *= a.numerator;
+    this->denominator *= a.denominator;
+    this->sign = this->sign ^ a.sign;
+    Reduce();
+
+    return *this;
+}
+
+RationalNumber& RationalNumber::operator/=(const RationalNumber &a)
+{
+    if (this == &a)
+    {
+        this->numerator = 1;
+        this->denominator = 1;
+        this->sign = 0;
+
+        return *this;
+    }
+    
+    this->numerator *= a.denominator;
+    this->denominator *= a.numerator;
+    this->sign = this->sign ^ a.sign;
+    Reduce();
+
+    return *this;
+}
+
 //
 // Operators in class end
 //
@@ -192,6 +221,20 @@ RationalNumber operator+(const RationalNumber &n1, const RationalNumber &n2)
 RationalNumber operator-(const RationalNumber &n1, const RationalNumber &n2)
 {
     return n1 + (-n2);
+}
+
+RationalNumber operator*(const RationalNumber &n1, const RationalNumber &n2)
+{
+    RationalNumber n(n1.GetNumerator() * n2.GetNumerator(), n1.GetDenominator() * n2.GetDenominator(), n1.GetSign() ^ n2.GetSign());
+    n.Reduce();
+    return n;
+}
+
+RationalNumber operator/(const RationalNumber &n1, const RationalNumber &n2)
+{
+    RationalNumber n(n1.GetNumerator() * n2.GetDenominator(), n1.GetDenominator() * n2.GetNumerator(), n1.GetSign() ^ n2.GetSign());
+    n.Reduce();
+    return n;
 }
 
 //
