@@ -196,6 +196,18 @@ RationalNumber &RationalNumber::operator/=(const RationalNumber &a)
 // Operators outside class
 //
 
+std::ostream &operator<<(std::ostream &os, const RationalNumber &n)
+{
+    if (n.sign)
+    {
+        return os << '-' << n.numerator << '/' << n.denominator;
+    }
+    else
+    {
+        return os << n.numerator << '/' << n.denominator;
+    }
+}
+
 RationalNumber operator-(const RationalNumber &n)
 {
     return RationalNumber(n.GetNumerator(), n.GetDenominator(), !n.GetSign());
@@ -282,6 +294,48 @@ RationalNumber operator/(const RationalNumber &n1, const RationalNumber &n2)
     RationalNumber n(n1.GetNumerator() * n2.GetDenominator(), n1.GetDenominator() * n2.GetNumerator(), n1.GetSign() ^ n2.GetSign());
     n.Reduce();
     return n;
+}
+
+// Comparison operators
+
+bool operator==(const RationalNumber &n1, const RationalNumber &n2)
+{
+    RationalNumber a(n1);
+    RationalNumber b(n2);
+
+    ToCommonDenominator(a, b);
+    
+    return a.GetNumerator() == b.GetDenominator();
+}
+
+bool operator!=(const RationalNumber &n1, const RationalNumber &n2)
+{
+    return !(n1 == n2);
+}
+
+bool operator<(const RationalNumber &n1, const RationalNumber &n2)
+{
+    RationalNumber a(n1);
+    RationalNumber b(n2);
+
+    ToCommonDenominator(a, b);
+
+    return a.GetNumerator() < b.GetDenominator();
+}
+
+bool operator>(const RationalNumber &n1, const RationalNumber &n2)
+{
+    return n2 < n1;
+}
+
+bool operator<=(const RationalNumber &n1, const RationalNumber &n2)
+{
+    return !(n2 < n1);
+}
+
+bool operator<=(const RationalNumber &n1, const RationalNumber &n2)
+{
+    return !(n1 < n2);
 }
 
 //

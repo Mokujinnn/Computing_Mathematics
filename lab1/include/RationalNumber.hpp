@@ -24,17 +24,7 @@ public:
     void Reduce();
     double ToDouble();
 
-    friend std::ostream &operator<<(std::ostream &os, const RationalNumber &n)
-    {
-        if (n.sign)
-        {
-            return os << '-' << n.numerator << '/' << n.denominator;
-        }
-        else
-        {
-            return os << n.numerator << '/' << n.denominator;
-        }
-    }
+    friend std::ostream &operator<<(std::ostream &os, const RationalNumber &n);
 
     RationalNumber &operator=(const RationalNumber &a);
 
@@ -52,3 +42,11 @@ RationalNumber operator+(const RationalNumber &n1, const RationalNumber &n2);
 RationalNumber operator-(const RationalNumber &n1, const RationalNumber &n2);
 RationalNumber operator*(const RationalNumber &n1, const RationalNumber &n2);
 RationalNumber operator/(const RationalNumber &n1, const RationalNumber &n2);
+
+
+bool operator==(const RationalNumber &n1, const RationalNumber &n2);
+bool operator!=(const RationalNumber &n1, const RationalNumber &n2);
+bool operator<(const RationalNumber &n1, const RationalNumber &n2);
+bool operator>(const RationalNumber &n1, const RationalNumber &n2);
+bool operator<=(const RationalNumber &n1, const RationalNumber &n2);
+bool operator>=(const RationalNumber &n1, const RationalNumber &n2);
