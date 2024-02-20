@@ -1,4 +1,5 @@
 #include <cmath>
+#include <string>
 
 #include "RationalNumber.hpp"
 
@@ -73,7 +74,7 @@ RationalNumber::RationalNumber(double a)
     int multiply = count;
 
     count = 0;
-    size_t b = size_t(a);
+    size_t b = size_t(std::abs(a));
     while (b != 0)
     {
         int n = b % 10;
@@ -208,6 +209,33 @@ std::ostream &operator<<(std::ostream &os, const RationalNumber &n)
     }
 }
 
+std::istream &operator>>(std::istream &is, RationalNumber &n)
+{
+    std::string s;
+    bool sign = false;
+
+    is >> s;
+
+    if (s.find('.') != -1)
+    {
+        n = RationalNumber(std::stod(s));
+    }
+    else
+    {
+        if (s[0] == '-')
+        {
+            sign = true;
+            s.erase(0, 1);
+        }   
+
+        n = RationalNumber(std::stoull(s), 1, sign);
+    }
+    
+    std::cout << s << ' ' << n;
+
+    return is;
+}
+
 RationalNumber operator-(const RationalNumber &n)
 {
     return RationalNumber(n.GetNumerator(), n.GetDenominator(), !n.GetSign());
@@ -333,9 +361,15 @@ bool operator<=(const RationalNumber &n1, const RationalNumber &n2)
     return !(n2 < n1);
 }
 
-bool operator<=(const RationalNumber &n1, const RationalNumber &n2)
+bool operator>=(const RationalNumber &n1, const RationalNumber &n2)
 {
     return !(n1 < n2);
+}
+
+
+bool operator!(const RationalNumber &n)
+{
+    return n.GetNumerator();
 }
 
 //

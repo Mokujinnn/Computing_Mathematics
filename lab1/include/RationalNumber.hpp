@@ -25,6 +25,7 @@ public:
     double ToDouble();
 
     friend std::ostream &operator<<(std::ostream &os, const RationalNumber &n);
+    friend std::istream &operator>>(std::istream &is, RationalNumber &n);
 
     RationalNumber &operator=(const RationalNumber &a);
 
@@ -50,3 +51,5 @@ bool operator<(const RationalNumber &n1, const RationalNumber &n2);
 bool operator>(const RationalNumber &n1, const RationalNumber &n2);
 bool operator<=(const RationalNumber &n1, const RationalNumber &n2);
 bool operator>=(const RationalNumber &n1, const RationalNumber &n2);
+
+bool operator!(const RationalNumber &n);

@@ -19,18 +19,16 @@ int main()
 
     // a.print();
 
-    RationalNumber a(3, 10, 0);
-    RationalNumber b(2, 5, 0);
+    RationalNumber a;
+    // RationalNumber b(2, 5, 0);
 
-    // a *= a;
+    // a = 51.45;
 
-    // std::cout << a << ' ' << b << ' ' << std::floor(1.2);
+    // std::cout << a << '\n';
 
-    a = 51.45;
+    // std::cout << a.ToDouble();
 
-    std::cout << a << '\n';
-
-    std::cout << a.ToDouble();
+    std::cin >> a;
 
     return 0;
 }
