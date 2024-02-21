@@ -46,7 +46,7 @@ void Matrix::print()
     {
         for (int j = 0; j < m; ++j)
         {
-            std::cout << std::setw(3) << matrix[i][j] << ' ';
+            std::cout << std::setw(6) << matrix[i][j] << ' ';
 
         }
         std::cout << "| ";
@@ -56,12 +56,25 @@ void Matrix::print()
     std::cout << "----------\n";
 }
 
+bool Matrix::IsVoidStr(int k)
+{
+    bool flag = true;
+    for (int i = 0; i < m - 2; i++)
+    {
+        if (matrix[k][i] != 0 )
+        {
+            flag = false;
+            break;
+        }
+    }
+    return flag && matrix[k][m-1] == 0;
+}
+
 void Matrix::readFromFile(const std::string &filename)
 {
     std::ifstream file(filename, std::ios::in);
 
-    file >> n;
-    m = n + 1;
+    file >> n >> m;
 
     memoryInit();
 
@@ -82,10 +95,17 @@ void Matrix::gauss()
     {
         for (int k = i + 1; k < n; ++k)
         {
-            if (!matrix[i][i])
+            int swap = 0;
+            while (matrix[i][i] == 0)
             {
-                std::cout << "Division by zero\n";
-                std::swap(matrix[i], matrix[i+1]);
+                // std::cout << "Division by zero\n";
+                swap++;
+                if (i + swap < n)
+                {
+                    std::swap(matrix[i], matrix[i+swap]);
+                }
+                else
+                    break;
             }
             
             RationalNumber d = matrix[k][i] / matrix[i][i];
@@ -96,15 +116,28 @@ void Matrix::gauss()
             }
 
             print();
+
+            if (matrix[k][k] == 0 && matrix[k][m-1] != 0)
+            {
+                std::cout << "ne sovmestna\n";
+                return;
+            }
         }
     }
 
 
     for (int i = n - 1; i >= 0 ; --i)
     {
-        if (!matrix[i][i])
+        if (matrix[i][i] == 0 && matrix[i][m-1] != 0)
         {
             std::cout << "ne sovmestna\n";
+            break;
+        }
+
+        if (IsVoidStr(i) || m - 1 > n)
+        {
+            std::cout << "beskonechno mnogo reshenii\n";
+            break;
         }
         
         for (int j = m - 2; j > i ; --j)
@@ -114,5 +147,7 @@ void Matrix::gauss()
         }
 
         vector[i] = matrix[i][m-1] / matrix[i][i];
+
+        print();
     }
 }

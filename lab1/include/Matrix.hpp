@@ -15,6 +15,8 @@ private:
     unsigned m;
     
     void memoryInit();
+
+    bool IsVoidStr(int k);
 public:
     Matrix(const std::string &filename);
 

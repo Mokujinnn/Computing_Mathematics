@@ -66,7 +66,7 @@ RationalNumber::RationalNumber(double a)
         this->sign = 1;
     }
 
-    while (!(a - std::floor(a) < eps))
+    while (!(std::abs(a - std::floor(a)) < eps))
     {
         a *= 10;
         ++count;
@@ -201,10 +201,19 @@ std::ostream &operator<<(std::ostream &os, const RationalNumber &n)
 {
     if (n.sign)
     {
+        if (n.denominator == 1)
+        {
+            return os << '-' << n.numerator;
+        }
+        
         return os << '-' << n.numerator << '/' << n.denominator;
     }
     else
     {
+        if (n.denominator == 1)
+        {
+            return os << n.numerator;
+        }
         return os << n.numerator << '/' << n.denominator;
     }
 }
@@ -220,6 +229,17 @@ std::istream &operator>>(std::istream &is, RationalNumber &n)
     {
         n = RationalNumber(std::stod(s));
     }
+    else if (s.find('/') != -1)
+    {
+        if (s[0] == '-')
+        {
+            sign = true;
+            s.erase(0, 1);
+        }   
+        size_t num = std::stoull(s);
+        s.erase(0, s.find('/') + 1);
+        n = RationalNumber(num, std::stoull(s), sign);
+    }
     else
     {
         if (s[0] == '-')
@@ -230,8 +250,6 @@ std::istream &operator>>(std::istream &is, RationalNumber &n)
 
         n = RationalNumber(std::stoull(s), 1, sign);
     }
-    
-    std::cout << s << ' ' << n;
 
     return is;
 }
@@ -333,7 +351,7 @@ bool operator==(const RationalNumber &n1, const RationalNumber &n2)
 
     ToCommonDenominator(a, b);
     
-    return a.GetNumerator() == b.GetDenominator();
+    return a.GetNumerator() == b.GetNumerator();
 }
 
 bool operator!=(const RationalNumber &n1, const RationalNumber &n2)
