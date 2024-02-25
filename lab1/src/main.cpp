@@ -7,7 +7,7 @@
 int main()
 {
 
-    Matrix a("D:\\Files\\Computing_Mathematics\\lab1\\file.txt");
+    Matrix a("../lab1/file.txt");
 
     a.print();
 

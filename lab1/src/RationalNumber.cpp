@@ -31,9 +31,9 @@ size_t ToCommonDenominator(RationalNumber &n1, RationalNumber &n2)
     size_t d1 = nok / n1.denominator;
     size_t d2 = nok / n2.denominator;
 
-    n1.denominator *= d1;
+    n1.denominator = nok;
     n1.numerator *= d1;
-    n2.denominator *= d2;
+    n2.denominator = nok;
     n2.numerator *= d2;
 
     return nok;
