@@ -7,11 +7,12 @@
 int main()
 {
 
-    Matrix a("../lab1/file.txt");
+    Matrix a("../lab1/file1.txt");
 
     a.print();
 
-    a.gauss();
+    // a.gauss();
+    a.jakobi();
 
     a.print();
 
