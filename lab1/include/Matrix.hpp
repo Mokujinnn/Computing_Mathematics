@@ -27,7 +27,5 @@ public:
     void readFromFile(const std::string &filename);
 
     void gauss();
-
-    void jakobi();
 };
 

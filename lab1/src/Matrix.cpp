@@ -155,17 +155,3 @@ void Matrix::gauss()
         print();
     }
 }
-
-void Matrix::jakobi()
-{
-    for (int i = 0; i < n; ++i)
-    {
-        RationalNumber d = matrix[i][i];
-        for (int j = 0; j < m; ++j)
-        {
-            matrix[i][j] /= d;
-        }
-    }
-
-    
-}
