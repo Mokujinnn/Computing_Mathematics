@@ -1,41 +1,115 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
 #include "Matrix.hpp"
 
+Matrix::Matrix(const std::string &filename)
+{
+    readFromFile(filename);
+}
 
-// RationalNumber max(RationalNumber *a, size_t n)
-// {
-//     RationalNumber m = a[0];
+Matrix::~Matrix()
+{
+}
 
-//     for (size_t i = 1; i < n; i++)
-//     {
-//         if (a[i] > m)
-//         {
-//             m = a[i];
-//             break;
-//         }
-//     }
+void Matrix::readFromFile(const std::string &filename)
+{
+    std::ifstream file(filename, std::ios::in);
+
+    if (!file.is_open())
+    {
+        std::cerr << "file not open\n";
+        std::exit(1);
+    }
+    int n, m;
+
+    file >> n >> m;
+
+    matrix.resize(n);
+    vector = std::vector<double>(n, 0);
+
+    for (int i = 0; i < n; i++)
+    {
+        std::vector<double> arr;
+        arr.resize(m);
+
+        for (int j = 0; j < m; j++)
+        {
+            double tmp;
+            file >> tmp;
+            arr[j] = tmp;
+        }
+        matrix[i] = arr;
+    }
     
-//     return m;
-// }
+    file.close();
+}
+
+void Matrix::print()
+{
+    for (auto m : matrix)
+    {
+        for (auto n : m)
+        {
+            std::cout << std::setw(5) << n << ' ';
+        }
+        std::cout << '\n';
+    }
+}
+
+void Matrix::printvec()
+{
+    std::cout << std::setprecision(15);
+    for (int i = 0; i < vector.size(); i++)
+    {
+        std::cout << 'x' << i << ": " << vector[i] << ' ';
+    }
+    std::cout << '\n';
+}
+
+double max(double *a, size_t n)
+{
+    double m = a[0];
+
+    for (size_t i = 1; i < n; i++)
+    {
+        if (a[i] > m)
+        {
+            m = a[i];
+            break;
+        }
+    }
+
+    return m;
+}
 
 void Matrix::seidel()
 {
-    RationalNumber eps = 1e-3;
-    RationalNumber epsArr[n];
-    RationalNumber curEps = eps;
+    int sizen = matrix.size();
+    int sizem = matrix[0].size();
+
+    double eps = 1e-1;
+    double epsArr[sizen];
+    double curEps = eps + 1;
     IterCounter = 0;
 
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < sizen; ++i)
     {
         vector[i] = 0;
         epsArr[i] = 0;
     }
 
-    while (curEps < eps || IterCounter < 1000)
+    while (curEps > eps && IterCounter < 100)
     {
-        for (int i = 0; i < n; ++i)
+        for (int i = 0; i < sizen; ++i)
         {
-            vector[i] = matrix[i][m - 1];
-            for (int j = 0; j < m - 1; ++j)
+            double tmp = vector[i];
+            vector[i] = matrix[i][sizem - 1];
+
+            for (int j = 0; j < sizem - 1; ++j)
             {
                 if (j != i)
                 {
@@ -44,13 +118,13 @@ void Matrix::seidel()
             }
             vector[i] /= matrix[i][i];
 
-            epsArr[i] = (vector[i] - epsArr[i]).abs();
+            epsArr[i] = std::abs(vector[i] - tmp);
         }
 
         IterCounter++;
 
-        curEps = max(epsArr, n);
+        curEps = max(epsArr, sizen);
     }
 
-    std::cout << "Number of iterations: " << IterCounter << '\n'; 
+    std::cout << "Number of iterations: " << IterCounter << '\n';
 }

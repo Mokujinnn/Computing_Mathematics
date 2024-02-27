@@ -4,8 +4,8 @@ project(iter LANGUAGES CXX)
 
 
 file(GLOB CPPS "src/*.cpp")
-file(GLOB HPPS "include/*.cpp")
+file(GLOB HPPS "include/*.hpp")
 
 add_executable(${PROJECT_NAME} ${CPPS} ${HPPS})
 target_include_directories(${PROJECT_NAME}
-    PUBLIC "./include")   
+    PUBLIC "./include")
