@@ -47,7 +47,6 @@ void Matrix::print()
         for (int j = 0; j < m; ++j)
         {
             std::cout << std::setw(6) << matrix[i][j] << ' ';
-
         }
         std::cout << "| ";
 
@@ -61,18 +60,24 @@ bool Matrix::IsVoidStr(int k)
     bool flag = true;
     for (int i = 0; i < m - 2; i++)
     {
-        if (matrix[k][i] != 0 )
+        if (matrix[k][i] != 0)
         {
             flag = false;
             break;
         }
     }
-    return flag && matrix[k][m-1] == 0;
+    return flag && matrix[k][m - 1] == 0;
 }
 
 void Matrix::readFromFile(const std::string &filename)
 {
     std::ifstream file(filename, std::ios::in);
+
+    if (!file.is_open())
+    {
+        std::cerr << "file not open\n";
+        std::exit(1);
+    }
 
     file >> n >> m;
 
@@ -102,12 +107,12 @@ void Matrix::gauss()
                 swap++;
                 if (i + swap < n)
                 {
-                    std::swap(matrix[i], matrix[i+swap]);
+                    std::swap(matrix[i], matrix[i + swap]);
                 }
                 else
                     break;
             }
-            
+
             RationalNumber d = matrix[k][i] / matrix[i][i];
 
             for (int j = i; j < m; ++j)
@@ -117,7 +122,7 @@ void Matrix::gauss()
 
             print();
 
-            if (matrix[k][k] == 0 && matrix[k][m-1] != 0)
+            if (matrix[k][k] == 0 && matrix[k][m - 1] != 0)
             {
                 std::cout << "ne sovmestna\n";
                 return;
@@ -125,10 +130,9 @@ void Matrix::gauss()
         }
     }
 
-
-    for (int i = n - 1; i >= 0 ; --i)
+    for (int i = n - 1; i >= 0; --i)
     {
-        if (matrix[i][i] == 0 && matrix[i][m-1] != 0)
+        if (matrix[i][i] == 0 && matrix[i][m - 1] != 0)
         {
             std::cout << "ne sovmestna\n";
             break;
@@ -139,14 +143,14 @@ void Matrix::gauss()
             std::cout << "beskonechno mnogo reshenii\n";
             break;
         }
-        
-        for (int j = m - 2; j > i ; --j)
+
+        for (int j = m - 2; j > i; --j)
         {
             matrix[i][m - 1] -= matrix[i][j] * vector[j];
             matrix[i][j] = 0;
         }
 
-        vector[i] = matrix[i][m-1] / matrix[i][i];
+        vector[i] = matrix[i][m - 1] / matrix[i][i];
 
         print();
     }
