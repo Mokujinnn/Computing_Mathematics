@@ -33,7 +33,7 @@ void Matrix::readFromFile(const std::string &filename)
 
     for (int i = 0; i < n; i++)
     {
-        std::vector<double> arr;
+        std::vector<double> &arr = matrix[i];
         arr.resize(m);
 
         for (int j = 0; j < m; j++)
@@ -42,9 +42,9 @@ void Matrix::readFromFile(const std::string &filename)
             file >> tmp;
             arr[j] = tmp;
         }
-        matrix[i] = arr;
+        // matrix[i] = arr;
     }
-    
+
     file.close();
 }
 
@@ -70,6 +70,30 @@ void Matrix::printvec()
     std::cout << '\n';
 }
 
+bool Matrix::convergenceCheck()
+{
+    double sum = 0;
+    bool flag = true;
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        double tmp = std::abs(matrix[i][i]);
+        sum = 0;
+
+        for (int j = 0; j < matrix[i].size() - 1; j++)
+        {
+            sum += abs(matrix[i][j]);
+        }
+
+        if (tmp < sum)
+        {
+            flag = false;
+            break;
+        }
+    }
+
+    return flag;
+}
+
 double max(double *a, size_t n)
 {
     double m = a[0];
@@ -79,11 +103,30 @@ double max(double *a, size_t n)
         if (a[i] > m)
         {
             m = a[i];
-            break;
         }
     }
 
     return m;
+}
+
+bool Matrix::NextSet(int n) // broken
+{
+    int j = n - 2;
+    while (j != -1 && std::abs(matrix[j][j]) >= std::abs(matrix[j + 1][j+1]))
+        j--;
+
+    if (j == -1)
+        return false; // больше перестановок нет
+    int k = n - 1;
+    while (std::abs(matrix[j][j]) >= std::abs(matrix[k][k]))
+        k--;
+
+    std::swap(matrix[j], matrix[k]);
+    int l = j + 1, r = n - 1; // сортируем оставшуюся часть последовательности
+    while (l < r)
+        std::swap(matrix[l++], matrix[r--]);
+
+    return true;
 }
 
 void Matrix::seidel()
@@ -91,7 +134,7 @@ void Matrix::seidel()
     int sizen = matrix.size();
     int sizem = matrix[0].size();
 
-    double eps = 1e-1;
+    double eps = 1e-3;
     double epsArr[sizen];
     double curEps = eps + 1;
     IterCounter = 0;
@@ -100,6 +143,29 @@ void Matrix::seidel()
     {
         vector[i] = 0;
         epsArr[i] = 0;
+    }
+
+    if (!convergenceCheck())
+    {
+        std::cout << "Method not convergence\n";
+
+        // for (int i = 0; i < sizen; i++)
+        // {
+        //     for (int j = 0; j < sizen - 1; j++)
+        //     {
+        //         std::swap(matrix[j], matrix[j + 1]);
+        //         print();
+        //     }
+
+        //     // print();
+        // }
+
+        while (NextSet(sizen))
+        {
+            print();
+        }
+
+        // return;
     }
 
     while (curEps > eps && IterCounter < 100)
@@ -119,11 +185,13 @@ void Matrix::seidel()
             vector[i] /= matrix[i][i];
 
             epsArr[i] = std::abs(vector[i] - tmp);
+            // printvec();
         }
 
         IterCounter++;
 
         curEps = max(epsArr, sizen);
+        printvec();
     }
 
     std::cout << "Number of iterations: " << IterCounter << '\n';

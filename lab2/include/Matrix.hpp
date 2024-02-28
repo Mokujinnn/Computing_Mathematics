@@ -11,6 +11,9 @@ private:
 
     size_t IterCounter;
 
+    bool convergenceCheck();
+    void swapLines(int n);
+    bool NextSet(int n);
 public:
     Matrix(const std::string &filename);
     ~Matrix();

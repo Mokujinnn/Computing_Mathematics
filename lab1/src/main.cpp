@@ -11,8 +11,7 @@ int main()
 
     a.print();
 
-    // a.gauss();
-    a.jakobi();
+    a.gauss();
 
     a.print();
 
