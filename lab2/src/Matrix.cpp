@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <algorithm>
 
 #include "Matrix.hpp"
 
@@ -81,7 +82,8 @@ bool Matrix::convergenceCheck()
 
         for (int j = 0; j < matrix[i].size() - 1; j++)
         {
-            sum += abs(matrix[i][j]);
+            if (i != j)
+                sum += std::abs(matrix[i][j]);
         }
 
         if (tmp < sum)
@@ -109,26 +111,6 @@ double max(double *a, size_t n)
     return m;
 }
 
-bool Matrix::NextSet(int n) // broken
-{
-    int j = n - 2;
-    while (j != -1 && std::abs(matrix[j][j]) >= std::abs(matrix[j + 1][j+1]))
-        j--;
-
-    if (j == -1)
-        return false; // больше перестановок нет
-    int k = n - 1;
-    while (std::abs(matrix[j][j]) >= std::abs(matrix[k][k]))
-        k--;
-
-    std::swap(matrix[j], matrix[k]);
-    int l = j + 1, r = n - 1; // сортируем оставшуюся часть последовательности
-    while (l < r)
-        std::swap(matrix[l++], matrix[r--]);
-
-    return true;
-}
-
 void Matrix::seidel()
 {
     int sizen = matrix.size();
@@ -149,23 +131,18 @@ void Matrix::seidel()
     {
         std::cout << "Method not convergence\n";
 
-        // for (int i = 0; i < sizen; i++)
-        // {
-        //     for (int j = 0; j < sizen - 1; j++)
-        //     {
-        //         std::swap(matrix[j], matrix[j + 1]);
-        //         print();
-        //     }
+        std::sort(matrix.begin(), matrix.end());
 
-        //     // print();
-        // }
+        print();
 
-        while (NextSet(sizen))
+        std::cout << "-------\n";
+
+        while(std::next_permutation(matrix.begin(), matrix.end()) && !convergenceCheck())
         {
             print();
+            std::cout << "-------\n";
         }
-
-        // return;
+            // continue;
     }
 
     while (curEps > eps && IterCounter < 100)
@@ -185,7 +162,6 @@ void Matrix::seidel()
             vector[i] /= matrix[i][i];
 
             epsArr[i] = std::abs(vector[i] - tmp);
-            // printvec();
         }
 
         IterCounter++;
