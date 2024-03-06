@@ -138,11 +138,7 @@ void Matrix::seidel()
         std::cout << "-------\n";
 
         while(std::next_permutation(matrix.begin(), matrix.end()) && !convergenceCheck())
-        {
-            print();
-            std::cout << "-------\n";
-        }
-            // continue;
+            continue;
     }
 
     while (curEps > eps && IterCounter < 100)
