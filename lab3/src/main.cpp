@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <cmath>
 
-double nonLinear(double left, double right, double eps, double (*func)(double))
+double secantMethod(double left, double right, double eps, double (*func)(double))
 {
     double curEps = eps + 1;
 
@@ -19,10 +19,10 @@ double nonLinear(double left, double right, double eps, double (*func)(double))
         double delta = x0 - x2;
         curEps = std::abs(delta);
 
+        std::cout << "y = " << y << " x = " << x1 << '\n';
+
         x0 = x1;
         x1 = x2;
-
-        std::cout << "y = " << y << " x = " << x1 << '\n';
     }
 
     return -1;
@@ -33,10 +33,15 @@ double f(double x)
     return pow(2, x) * x - pow(3, x) + 10;
 }
 
+double test(double x)
+{
+    return 1.5 - 0.4 * pow(x, 1.5) - 0.5 * log(x);
+}
+
 int main()
 {
-    std::cout << std::setprecision(9);
-    nonLinear(3, 4, 0.0000000001, f);
+    std::cout << std::setprecision(15);
+    secantMethod(0.5, 6, 1e-6, f);
 
     return 0;
 }
