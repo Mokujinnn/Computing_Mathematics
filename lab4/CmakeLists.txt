@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(interpolation LANGUAGES CXX)
+
+
+file(GLOB CPPS "*.cpp")
+file(GLOB HPPS "*.hpp")
+
+add_executable(${PROJECT_NAME} ${CPPS} ${HPPS})
+target_include_directories(${PROJECT_NAME}
+    PUBLIC "./include")
