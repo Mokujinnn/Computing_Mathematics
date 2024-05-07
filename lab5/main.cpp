@@ -14,7 +14,7 @@ void integral(double a, double b, int startn, double eps, double (*func)(double)
     double sq[2];
     #pragma omp parallel // num_threads(1)
     {
-        int n = startn, k;
+        int n = startn, k = 0;
         double delta = 1;
         for (k = 0; delta > eps; n *= 2, k ^= 1)
         {
