@@ -48,15 +48,19 @@ double SEIRD(double S0, double E0, double I0, double R0, double D0, int t0, int 
     double S = S0, E = E0, I = I0, R = R0, D = D0;
 
     int N;
-    for (int i = t0; i < t / h; i++)
+    for (int i = t0; i < t; i++)
     {
         N = getN(S, E, I, R, D);
 
-        S = S0 + h * getdS(S0, E0, I0, N);
-        E = E0 + h * getdE(S0, E0, I0, N);
-        I = I0 + h * getdI(E0, I0);
-        R = R0 + h * getdR(E0, I0);
-        D = D0 + h * getdD(I0);
+        double S1 = S0 + h * getdS(S0, E0, I0, N);
+        double E1 = E0 + h * getdE(S0, E0, I0, N);
+        double I1 = I0 + h * getdI(E0, I0);
+
+        S = S0 + h / 2 * (getdS(S0, E0, I0, N) + getdS(S1, E1, I1, N)); 
+        E = E0 + h / 2 * (getdE(S0, E0, I0, N) + getdE(S1, E1, I1, N));
+        I = I0 + h / 2 * (getdI(E0, I0) + getdI(E1, I1));
+        R = R0 + h / 2 * (getdR(E0, I0) + getdR(E1, I1));
+        D = D0 + h / 2 * (getdD(I0) + getdD(I1));
 
         S0 = S;
         E0 = E;
@@ -64,7 +68,6 @@ double SEIRD(double S0, double E0, double I0, double R0, double D0, int t0, int 
         R0 = R;
         D0 = D;
 
-        // if (i % 100 == 0)
         // {
         //     std::cout << std::fixed << std::setprecision(9);
         //     std::cout << "S0 = " << S0 << '\n';
@@ -72,7 +75,6 @@ double SEIRD(double S0, double E0, double I0, double R0, double D0, int t0, int 
         //     std::cout << "I0 = " << I0 << '\n';
         //     std::cout << "R0 = " << R0 << '\n';
         //     std::cout << "D0 = " << D0 << "\n\n";
-        // }
     }
 
     return k * E / 0.58;
@@ -95,7 +97,7 @@ int main(int argc, char const *argv[])
 
     for (int i = 1; i <= 90; i++)
     {
-        file << i << ',' << SEIRD(S0, E0, I0, R0, D0, 0, i, 0.01) << '\n';
+        file << i << ',' << SEIRD(S0, E0, I0, R0, D0, 0, i, 1) << '\n';
     }
     file.close();
 
